@@ -37,10 +37,6 @@ function closePopup() {
   document.getElementById('gamePopup').style.display = 'none';
 }
 
-function CPABuildLock() {
-  alert('Download link is locked. Please complete a quick action!');
-}
-
 window.addEventListener('load', () => {
   const loader = document.getElementById('loader');
   const content = document.getElementById('content');
