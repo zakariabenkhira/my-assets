@@ -1,0 +1,238 @@
+ <style>
+    :root {
+      --main-bg: #0f0f0f;
+      --secondary-bg: #1e1e1e;
+      --primary-color: #00ffc8;
+      --secondary-color: #ff0077;
+      --text-color: #ffffff;
+      --card-bg: #2a2a2a;
+      --shadow: 0 0 20px rgba(0, 255, 200, 0.2);
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Cairo', sans-serif;
+    }
+    body {
+      background-color: var(--main-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: var(--main-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      flex-direction: column;
+      animation: fadeOut 3s forwards ease-in-out;
+    }
+    #loader h1 {
+      color: var(--primary-color);
+      font-size: 48px;
+      animation: fadeInZoom 2s ease forwards;
+      text-shadow: 0 0 20px var(--primary-color);
+    }
+    @keyframes fadeInZoom {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes fadeOut {
+      0% { opacity: 1; }
+      100% { opacity: 0; visibility: hidden; }
+    }
+    #content {
+      display: none;
+      opacity: 0;
+      animation: fadeInContent 2s forwards ease-in-out;
+    }
+    @keyframes fadeInContent {
+      0% { opacity: 0; }
+      100% { opacity: 1; }
+    }
+    header {
+      background-color: var(--secondary-bg);
+      padding: 15px 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      animation: fadeIn 1s ease-in-out;
+    }
+    header h1 {
+      font-size: 36px;
+      color: var(--primary-color);
+      animation: colorChange 3s infinite;
+      text-align: center;
+    }
+    @keyframes colorChange {
+      0% { color: #00ffc8; }
+      25% { color: #ff0077; }
+      50% { color: #ff9900; }
+      75% { color: #00bfff; }
+      100% { color: #00ffc8; }
+    }
+    .hero {
+      background: linear-gradient(135deg, #1f1f1f, #121212);
+      text-align: center;
+      padding: 60px 20px 30px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    .hero h2 {
+      font-size: 32px;
+      margin-bottom: 15px;
+      color: var(--primary-color);
+      text-shadow: 0 0 10px var(--secondary-color);
+    }
+    .hero p {
+      font-size: 16px;
+      color: #ccc;
+      margin-bottom: 20px;
+    }
+    .search-container {
+      margin: 0 auto;
+      max-width: 500px;
+      text-align: center;
+    }
+    .search-container input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background-color: var(--card-bg);
+      color: var(--text-color);
+      box-shadow: var(--shadow);
+    }
+    .games-section {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+    .game-card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s ease-in-out, box-shadow 0.3s ease;
+      animation: fadeIn 1s ease-in-out;
+    }
+    .game-card:hover {
+      transform: translateY(-10px) scale(1.05);
+      box-shadow: 0 0 25px rgba(0, 255, 200, 0.4);
+    }
+    .game-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.3s ease-in-out;
+    }
+    .game-card:hover img {
+      transform: scale(1.1);
+    }
+    .game-card .card-content {
+      padding: 15px;
+    }
+    .game-card h3 {
+      font-size: 20px;
+      margin-bottom: 8px;
+      color: var(--primary-color);
+      transition: color 0.3s ease-in-out;
+    }
+    .game-card:hover h3 {
+      color: var(--secondary-color);
+    }
+    .game-card p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    .game-card button {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    .game-card button:hover {
+      background-color: #ff3399;
+      transform: translateY(-5px);
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: var(--card-bg);
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0, 255, 200, 0.3);
+      z-index: 10000;
+      width: 80%;
+      max-width: 500px;
+      animation: fadeInPopup 0.5s ease-in-out;
+    }
+    @keyframes fadeInPopup {
+      0% { opacity: 0; transform: scale(0.5); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    .popup img {
+      width: 100%;
+      border-radius: 15px;
+      margin-bottom: 15px;
+    }
+    .popup h3 {
+      color: var(--primary-color);
+      margin-bottom: 10px;
+    }
+    .popup p {
+      color: #ccc;
+      margin-bottom: 10px;
+    }
+    .popup button {
+      background-color: var(--secondary-color);
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      display: block;
+      margin: 20px auto 0;
+    }
+    .popup button:hover {
+      background-color: #ff3399;
+    }
+    .popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      color: #bbb;
+      cursor: pointer;
+    }
+    .popup .close-btn:hover {
+      color: var(--secondary-color);
+    }
+    footer {
+      background-color: var(--secondary-bg);
+      text-align: center;
+      padding: 30px 20px;
+      margin-top: 60px;
+      color: #aaa;
+    }
+  </style>
