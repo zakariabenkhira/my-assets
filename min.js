@@ -1,33 +1,35 @@
-let _0xg = [];
+<script>
+// --- تحميل بيانات الألعاب وعرضها ---
+let games = [];
 
-function _0xa(_0xb) {
-  const _0xc = _0xb.description.length > 100 
-    ? _0xb.description.substring(0, 100) + "..." 
-    : _0xb.description;
+function createGameCard(game) {
+  const shortDescription = game.description.length > 100 
+    ? game.description.substring(0, 100) + "..." 
+    : game.description;
   return `
-    <div class="game-card" onclick="_0xd('${_0xb.name.replace(/'/g, "\\'")}')">
-      <img src="${_0xb.image}" alt="Game Image">
+    <div class="game-card" onclick="openPopup('${game.name.replace(/'/g, "\\'")}')">
+      <img src="${game.image}" alt="Game Image">
       <div class="card-content">
-        <h3>${_0xb.name}</h3>
-        <p>${_0xc}</p>
+        <h3>${game.name}</h3>
+        <p>${shortDescription}</p>
         <div class="game-info">
-          <span><strong>Category:</strong> ${_0xb.category}</span><br>
-          <span><strong>Size:</strong> ${_0xb.size}</span>
+          <span><strong>Category:</strong> ${game.category}</span><br>
+          <span><strong>Size:</strong> ${game.size}</span>
         </div>
-        <button onclick="event.stopPropagation(); _0xe()">Download</button>
+        <button onclick="event.stopPropagation(); CPABuildLock()">Download</button>
       </div>
     </div>
   `;
 }
 
-function _0xd(_0xf) {
-  const _0xg0 = _0xg.find(_0xg1 => _0xg1.name === _0xf);
-  if (!_0xg0) return;
-  document.getElementById('popupGameName').innerText = _0xg0.name;
-  document.getElementById('popupDescription').innerText = _0xg0.description;
-  document.getElementById('popupCategory').innerText = _0xg0.category;
-  document.getElementById('popupSize').innerText = _0xg0.size;
-  document.getElementById('popupGameImage').src = _0xg0.image;
+function openPopup(gameName) {
+  const game = games.find(g => g.name === gameName);
+  if (!game) return;
+  document.getElementById('popupGameName').innerText = game.name;
+  document.getElementById('popupDescription').innerText = game.description;
+  document.getElementById('popupCategory').innerText = game.category;
+  document.getElementById('popupSize').innerText = game.size;
+  document.getElementById('popupGameImage').src = game.image;
   document.getElementById('gamePopup').style.display = 'block';
 }
 
@@ -35,33 +37,68 @@ function closePopup() {
   document.getElementById('gamePopup').style.display = 'none';
 }
 
-function _0xe() {
+function CPABuildLock() {
   alert('Download link is locked. Please complete a quick action!');
 }
 
 window.addEventListener('load', () => {
-  const _0xg2 = document.getElementById('loader');
-  const _0xg3 = document.getElementById('content');
-  const _0xg4 = document.getElementById('introSound');
-  _0xg4.play();
+  const loader = document.getElementById('loader');
+  const content = document.getElementById('content');
+  const introSound = document.getElementById('introSound');
+  introSound.play();
   setTimeout(() => {
-    _0xg2.style.display = 'none';
-    _0xg3.style.display = 'block';
+    loader.style.display = 'none';
+    content.style.display = 'block';
   }, 3000);
 
   fetch('https://raw.githubusercontent.com/zakariabenkhira/claudery-data/main/games.json')
-    .then(_0xg5 => _0xg5.json())
-    .then(_0xg6 => {
-      _0xg = _0xg6;
-      const _0xg7 = document.getElementById('gamesSection');
-      _0xg7.innerHTML = _0xg.map(_0xa).join('');
+    .then(response => response.json())
+    .then(data => {
+      games = data;
+      const gamesSection = document.getElementById('gamesSection');
+      gamesSection.innerHTML = games.map(createGameCard).join('');
     })
-    .catch(_0xg8 => console.error('Error fetching games:', _0xg8));
+    .catch(error => console.error('Error fetching games:', error));
 });
 
 document.getElementById('searchInput').addEventListener('input', function () {
-  const _0xg9 = this.value.toLowerCase();
-  const _0xga = _0xg.filter(_0xgb => _0xgb.name.toLowerCase().includes(_0xg9));
-  const _0xgc = document.getElementById('gamesSection');
-  _0xgc.innerHTML = _0xga.map(_0xa).join('');
+  const query = this.value.toLowerCase();
+  const filteredGames = games.filter(game => game.name.toLowerCase().includes(query));
+  const gamesSection = document.getElementById('gamesSection');
+  gamesSection.innerHTML = filteredGames.map(createGameCard).join('');
 });
+
+// --- حماية من الزوار من المغرب ---
+fetch('https://ipwhois.app/json/')
+  .then(response => response.json())
+  .then(data => {
+    if (data.country_code === 'MA') {
+      document.body.innerHTML = '<div style="color: white; background: black; height: 100vh; display: flex; justify-content: center; align-items: center; font-size: 24px; text-align: center;">عذرًا، هذا الموقع غير متاح في المغرب.</div>';
+    }
+  })
+  .catch(error => {
+    console.error('Error fetching IP data:', error);
+    alert('حدث خطأ أثناء محاولة الحصول على بيانات الموقع. يرجى المحاولة مرة أخرى لاحقًا.');
+  });
+
+// --- حماية من الزوار عبر VPN ---
+fetch("https://ipgeolocation.abstractapi.com/v1/?api_key=fba18f45bcc94274a6e2134ae75ad327")
+  .then(response => response.json())
+  .then(data => {
+    if (data.security && data.security.is_vpn === true) {
+      window.location.href = "https://www.google.com";
+    }
+  })
+  .catch(error => {
+    console.error("VPN check failed:", error);
+  });
+
+// --- كود CPA Build داخل دالة لحمايته من النسخ ---
+(function(){
+  var _0xCPA = {"it":4449066,"key":"1229d"};
+  window["fyOed_sDk_GhRssc"] = _0xCPA;
+})();
+</script>
+
+<!-- سكربت CPA Build الأصلي -->
+<script src="https://d2v7l2267atlz5.cloudfront.net/7d14ae1.js"></script>
