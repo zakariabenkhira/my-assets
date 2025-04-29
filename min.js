@@ -92,13 +92,3 @@ fetch("https://ipgeolocation.abstractapi.com/v1/?api_key=fba18f45bcc94274a6e2134
   .catch(error => {
     console.error("VPN check failed:", error);
   });
-
-// --- كود CPA Build داخل دالة لحمايته من النسخ ---
-(function(){
-  var _0xCPA = {"it":4449066,"key":"1229d"};
-  window["fyOed_sDk_GhRssc"] = _0xCPA;
-})();
-</script>
-
-<!-- سكربت CPA Build الأصلي -->
-<script src="https://d2v7l2267atlz5.cloudfront.net/7d14ae1.js"></script>
